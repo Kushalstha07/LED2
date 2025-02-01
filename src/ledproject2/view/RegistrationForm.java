@@ -299,7 +299,7 @@ public class RegistrationForm extends javax.swing.JFrame {
     // Database connection details
     String url = "jdbc:mysql://localhost:3306/led2"; // Change to your database name
     String user = "root"; // Change to your MySQL username
-    String password = "Admin123"; // Change to your MySQL password
+    String password = "pro@5598"; // Change to your MySQL password
 
     // Get values from form fields
     String firstname = firstnameEntryRegister.getText();
@@ -359,7 +359,10 @@ if (!pass.equals(confirmPass)) {
     JOptionPane.showMessageDialog(this, "Invalid number!", "Error", JOptionPane.ERROR_MESSAGE);
     return;
     }
-    
+    if (!phone.matches("\\d+")) {
+    JOptionPane.showMessageDialog(this, "Phone number must contain only digits!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
     // SQL query to insert data
     String query = "INSERT INTO registrationcredentials (Firstname, Lastname, Email, Password, ConfirmPassword, Address, Phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
