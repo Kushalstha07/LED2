@@ -3,6 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ledproject2.view;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -91,6 +98,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         labelFirstName.setText("Firstname");
 
         firstnameEntryRegister.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        firstnameEntryRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstnameEntryRegisterActionPerformed(evt);
+            }
+        });
 
         lastnameLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lastnameLabel.setText("Lastname");
@@ -132,6 +144,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         registerButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 registerButtonMouseClicked(evt);
+            }
+        });
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
             }
         });
 
@@ -271,6 +288,66 @@ public class RegistrationForm extends javax.swing.JFrame {
         LoginForm login3 = new LoginForm();
         login3.setVisible(true);
     }//GEN-LAST:event_registerButtonMouseClicked
+
+    private void firstnameEntryRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstnameEntryRegisterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_firstnameEntryRegisterActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+                                               
+    // Database connection details
+    String url = "jdbc:mysql://localhost:3306/led2"; // Change to your database name
+    String user = "root"; // Change to your MySQL username
+    String password = "pro@5598"; // Change to your MySQL password
+
+    // Get values from form fields
+    String firstname = firstnameEntryRegister.getText();
+    String lastname = lastnameEntryRegister.getText();
+    String email = jTextField2.getText();
+    String pass = new String(jPasswordField1.getPassword());
+    String confirmPass = new String(confirmPassEntry.getPassword());
+    String address = addressEntryRegister.getText();
+    String phone = jTextField1.getText();
+
+    // Validate that passwords match
+    if (!pass.equals(confirmPass)) {
+        JOptionPane.showMessageDialog(this, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // SQL query to insert data
+    String query = "INSERT INTO registrationcredentials (Firstname, Lastname, Email, Password, ConfirmPassword, Address, Phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    try {
+        // Establish connection
+        Connection conn = DriverManager.getConnection(url, user, password);
+        PreparedStatement stmt = conn.prepareStatement(query);
+        
+        // Set parameters
+        stmt.setString(1, firstname);
+        stmt.setString(2, lastname);
+        stmt.setString(3, email);
+        stmt.setString(4, pass);
+        stmt.setString(5,confirmPass);
+        stmt.setString(6, address);
+        stmt.setString(7, phone);
+
+        // Execute update
+        int rowsInserted = stmt.executeUpdate();
+        if (rowsInserted > 0) {
+            JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+            new LoginForm().setVisible(true); // Redirect to login page
+        }
+
+        // Close resources
+        stmt.close();
+        conn.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+       // TODO add your handling code here:
+    }//GEN-LAST:event_registerButtonActionPerformed
 
     /**
      * @param args the command line arguments

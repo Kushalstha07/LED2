@@ -3,6 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ledproject2.view;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import ledproject2.model.DatabaseConn;
+
 
 /**
  *
@@ -156,6 +162,11 @@ public class LoginForm extends javax.swing.JFrame {
                 signinButtonLoginMouseClicked(evt);
             }
         });
+        signinButtonLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signinButtonLoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -259,6 +270,36 @@ public class LoginForm extends javax.swing.JFrame {
         this.setVisible(false);
                 // TODO add your handling code here:
     }//GEN-LAST:event_signinButtonLoginMouseClicked
+
+    private void signinButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signinButtonLoginActionPerformed
+String email = jTextField1.getText();
+    String password = new String(jPasswordField1.getPassword());
+
+    if (validateUser(email, password)) {
+        Dashboard dash = new Dashboard();
+        dash.setVisible(true);
+        this.setVisible(false);
+    } else {
+        JOptionPane.showMessageDialog(this, "Invalid email or password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+private boolean validateUser(String email, String password) {
+    String query = "SELECT * FROM registrationcredentials WHERE email = ? AND password = ?";
+
+    try (Connection conn = DatabaseConn.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        stmt.setString(1, email);
+        stmt.setString(2, password);
+        ResultSet rs = stmt.executeQuery();
+
+        return rs.next();  // If there's a match, return true
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }        // TODO add your handling code here:
+    }//GEN-LAST:event_signinButtonLoginActionPerformed
 
     /**
      * @param args the command line arguments
