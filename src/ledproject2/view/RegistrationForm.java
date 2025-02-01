@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 
+
 import javax.swing.JOptionPane;
 
 /**
@@ -298,7 +299,7 @@ public class RegistrationForm extends javax.swing.JFrame {
     // Database connection details
     String url = "jdbc:mysql://localhost:3306/led2"; // Change to your database name
     String user = "root"; // Change to your MySQL username
-    String password = "pro@5598"; // Change to your MySQL password
+    String password = "Admin123"; // Change to your MySQL password
 
     // Get values from form fields
     String firstname = firstnameEntryRegister.getText();
@@ -309,11 +310,56 @@ public class RegistrationForm extends javax.swing.JFrame {
     String address = addressEntryRegister.getText();
     String phone = jTextField1.getText();
 
-    // Validate that passwords match
-    if (!pass.equals(confirmPass)) {
+if (!pass.equals(confirmPass)) {
         JOptionPane.showMessageDialog(this, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+        // Check if any field is empty
+    if (firstname.isEmpty() || lastname.isEmpty() || email.isEmpty() || phone.isEmpty() ||
+        address.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
+        
+        // Construct a message for empty fields
+        StringBuilder errorMessage = new StringBuilder("Please fill in the following fields:\n");
+        
+        if (firstname.isEmpty()) {
+            errorMessage.append("- First Name\n");
+        }
+        if (lastname.isEmpty()) {
+            errorMessage.append("- Last Name\n");
+        }
+        if (email.isEmpty()) {
+            errorMessage.append("- Email\n");
+        }
+        if (phone.isEmpty()) {
+            errorMessage.append("- Phone\n");
+        }
+        if (address.isEmpty()) {
+            errorMessage.append("- Address\n");
+        }
+        if (password.isEmpty()) {
+            errorMessage.append("- Password\n");
+        }
+        if (confirmPass.isEmpty()) {
+            errorMessage.append("- Confirm Password\n");
+        }
+        // Email validation to check for @gmail.com
+
+
+        // Show the error message with missing fields
+        JOptionPane.showMessageDialog(this, errorMessage.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        return; // Stop the form submission
+    }
+    
+    if (!email.endsWith("@gmail.com")) {
+    JOptionPane.showMessageDialog(this, "Email must be a Gmail address!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+    }
+    
+    if(phone.length()<10){
+    JOptionPane.showMessageDialog(this, "Invalid number!", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+    }
+    
 
     // SQL query to insert data
     String query = "INSERT INTO registrationcredentials (Firstname, Lastname, Email, Password, ConfirmPassword, Address, Phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
