@@ -61,6 +61,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         setTitle("Registration");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1400, 800));
+        setPreferredSize(new java.awt.Dimension(1400, 800));
         setResizable(false);
         setSize(new java.awt.Dimension(1400, 800));
 
@@ -211,7 +212,7 @@ public class RegistrationForm extends javax.swing.JFrame {
                         .addGap(260, 260, 260)
                         .addComponent(registerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
+                        .addGap(263, 263, 263)
                         .addComponent(logoRegistration, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(519, Short.MAX_VALUE))
         );
